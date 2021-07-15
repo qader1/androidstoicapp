@@ -1,0 +1,2 @@
+rootProject.name = "Stoic Reminder"
+include ':app'
