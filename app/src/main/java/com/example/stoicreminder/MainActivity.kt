@@ -5,6 +5,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View.TEXT_ALIGNMENT_CENTER
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -17,6 +19,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val btn1 = findViewById<Button>(R.id.btn1)
         val textview = findViewById<TextView>(R.id.textView6)
+        val fadeIn = AlphaAnimation(0F, 1F)
+        val fadeOut = AlphaAnimation(1F, 0F)
+        fadeIn.duration = 1000
+        fadeOut.duration = 1000
+        fadeIn.fillAfter = true
+        fadeOut.fillAfter = true
         textview.textSize = 25F
         textview.textAlignment = TEXT_ALIGNMENT_CENTER
         val text = assets.open("q.json")
@@ -29,6 +37,12 @@ class MainActivity : AppCompatActivity() {
                 val quote: String = qs.getJSONArray("quotes")[textInd - 1] as String
                 mp = playSound(sound)
                 textview.text = quote
+                textview.alpha = 1F
+                textview.startAnimation(fadeIn)
+                mp.setOnCompletionListener {
+                    textview.startAnimation(fadeOut)
+                }
+
             } else {mp.stop()}
         }
 
